@@ -1,0 +1,6 @@
+/// The final Error type of RPCs to be serialized to protobuf.
+message PrpcError {
+    /// The error description
+    string message = 1;
+}
+
