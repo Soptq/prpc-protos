@@ -31,13 +31,10 @@ service PhactoryAPI {
 
 // Basic information about a Phactory instance.
 message PhactoryInfo {
-  enum GatekeeperRole { None = 0; Dummy = 1; Active = 2; }
   // Whether the init_runtime has been called successfully.
   bool initialized = 1;
   // Whether the worker has been registered on-chain.
   bool registered = 2;
-  // The Gatekeeper role of the worker.
-  GatekeeperRole gatekeeper_role = 3;
   // Genesis block header hash passed in by init_runtime.
   optional string genesis_block_hash = 4;
   // Public key of the worker.
@@ -58,6 +55,21 @@ message PhactoryInfo {
   uint64 pending_messages = 12;
   // Local estimated benchmark score.
   uint64 score = 13;
+  // Status of gatekeeper
+  GatekeeperStatus gatekeeper = 14;
+}
+
+enum GatekeeperRole {
+  None = 0;
+  Dummy = 1;
+  Active = 2;
+}
+
+message GatekeeperStatus {
+  // The Gatekeeper role of the worker.
+  GatekeeperRole role = 1;
+  // The master public key, empty if not a Gatekeeper
+  string master_public_key = 2;
 }
 
 // Response to SyncHeader & SyncParaHeader.
