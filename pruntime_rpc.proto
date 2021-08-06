@@ -141,6 +141,7 @@ message Attestation {
   int32 version = 1;
   string provider = 2;
   AttestationReport payload = 3;
+  uint64 timestamp = 4;
 }
 
 message AttestationReport {
