@@ -82,16 +82,16 @@ message SyncedTo {
 message HeadersToSync {
   // The relaychain headers to be synced.
   // @codec scale crate::blocks::HeadersToSync
-  bytes headers = 1;
+  bytes encoded_headers = 1;
   // @codec scale crate::blocks::AuthoritySetChange
-  optional bytes authority_set_change = 2;
+  optional bytes encoded_authority_set_change = 2;
 }
 
 // Request parameters for SyncParaHeader.
 message ParaHeadersToSync {
   // The parachain headers to be synced.
   // @codec scale crate::blocks::Headers
-  bytes headers = 1;
+  bytes encoded_headers = 1;
   // aka StorageProof
   repeated bytes proof = 2;
 }
@@ -100,7 +100,7 @@ message ParaHeadersToSync {
 message Blocks {
   // The blocks to be synced.
   // @codec scale Vec<crate::blocks::BlockHeaderWithChanges>
-  bytes blocks = 1;
+  bytes encoded_blocks = 1;
 }
 
 // Request parameters for InitRuntime.
@@ -109,30 +109,30 @@ message InitRuntimeRequest {
   bool skip_ra = 1;
   // Genesis block infomation for light validation.
   // @codec scale crate::blocks::GenesisBlockInfo
-  bytes genesis_info = 2;
+  bytes encoded_genesis_info = 2;
   // Worker identity key for dev mode.
   optional bytes debug_set_key = 3;
   // The parachain's genesis storage state.
   // @codec scale crate::blocks::StorageState
-  bytes genesis_state = 4;
+  bytes encoded_genesis_state = 4;
   // The operator of of this worker, which has the permission to bind it's miner.
   // @codec scale chain::AccountId
-  optional bytes operator = 5;
+  optional bytes encoded_operator = 5;
   // Init the runtime for parachain.
   bool is_parachain = 6;
 }
 
 message InitRuntimeResponse {
   // @codec scale phala_types::WorkerRegistrationInfo<chain::AccountId>
-  bytes runtime_info = 1;
+  bytes encoded_runtime_info = 1;
   // The hash of the first synced relaychain header.
   // @codec scale chain::Hash
-  bytes genesis_block_hash = 2;
+  bytes encoded_genesis_block_hash = 2;
   // The worker's public key.
   // @codec scale phala_types::WorkerPublicKey
-  bytes public_key = 3;
+  bytes encoded_public_key = 3;
   // @codec scale phala_types::EcdhPublicKey
-  bytes ecdh_public_key = 4;
+  bytes encoded_ecdh_public_key = 4;
   // The sgx attestation
   optional Attestation attestation = 5;
 }
@@ -153,5 +153,5 @@ message AttestationReport {
 // Response for GetEgressMessages
 message GetEgressMessagesResponse {
   // @codec scale EgressMessages
-  bytes messages = 1;
+  bytes encoded_messages = 1;
 }
