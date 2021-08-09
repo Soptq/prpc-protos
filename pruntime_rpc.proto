@@ -16,6 +16,13 @@ service PhactoryAPI {
   // Sync the parachain header
   rpc SyncParaHeader (ParaHeadersToSync) returns (SyncedTo) {}
 
+  // Sync a combined batch of relaychain & parachain headers
+  // NOTE:
+  //   - The two latest headers MUST be aligned with each other by the `Para.Heads` read from the relaychain storage.
+  //   - The operation is not guarenteed to be atomical. If the parachain header is rejected, the already synced relaychain
+  //     headers will keep it's progress.
+  rpc SyncCombinedHeaders (CombinedHeadersToSync) returns (HeadersSyncedTo) {}
+
   // Dispatch blocks (Sync storage changes)
   rpc DispatchBlocks (Blocks) returns (SyncedTo) {}
 
@@ -94,6 +101,26 @@ message ParaHeadersToSync {
   bytes encoded_headers = 1;
   // aka StorageProof
   repeated bytes proof = 2;
+}
+
+// Request parameters for SyncCombinedHeaders.
+message CombinedHeadersToSync {
+  // The relaychain headers to be synced.
+  // @codec scale crate::blocks::HeadersToSync
+  bytes encoded_relaychain_headers = 1;
+  // @codec scale crate::blocks::AuthoritySetChange
+  optional bytes authority_set_change = 2;
+  // The parachain headers to be synced.
+  // @codec scale crate::blocks::Headers
+  bytes encoded_parachain_headers = 3;
+  // aka StorageProof
+  repeated bytes proof = 4;
+}
+
+// Response to SyncCombinedHeaders.
+message HeadersSyncedTo {
+  uint32 relaychain_synced_to = 1;
+  uint32 parachain_synced_to = 2;
 }
 
 // Request parameters for DispatchBlocks.
