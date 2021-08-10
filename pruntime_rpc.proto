@@ -5,7 +5,7 @@ import "google/protobuf/empty.proto";
 
 package pruntime_rpc;
 
-// The greeting service definition.
+// The Phactory Runtime service definition.
 service PhactoryAPI {
   // Get basic information about Phactory state.
   rpc GetInfo (google.protobuf.Empty) returns (PhactoryInfo) {}
@@ -34,6 +34,9 @@ service PhactoryAPI {
 
   // Get pending egress messages
   rpc GetEgressMessages (google.protobuf.Empty) returns (GetEgressMessagesResponse) {}
+
+  // Send a query to a contract
+  rpc ContractQuery (ContractQueryRequest) returns (ContractQueryResponse) {}
 }
 
 // Basic information about a Phactory instance.
@@ -181,4 +184,35 @@ message AttestationReport {
 message GetEgressMessagesResponse {
   // @codec scale EgressMessages
   bytes encoded_messages = 1;
+}
+
+// Request parameters for ContractQuery
+message ContractQueryRequest {
+  // The query data.
+  // @codec scale crate::crypto::EncryptedData
+  bytes encoded_encrypted_data = 1;
+
+  // The signature infomation
+  Signature signature = 2;
+}
+
+message Signature {
+  // The sender's public key
+  bytes origin = 1;
+  // The signature type
+  SignatureType signature_type = 2;
+  // The signature of the data
+  bytes signature = 3;
+}
+
+enum SignatureType {
+  Ed25519 = 0;
+  Sr25519 = 1;
+  Ecdsa = 2;
+}
+
+message ContractQueryResponse {
+  // The query result.
+  // @codec scale crate::crypto::EncryptedData
+  bytes payload = 1;
 }
