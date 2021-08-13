@@ -214,5 +214,5 @@ enum SignatureType {
 message ContractQueryResponse {
   // The query result.
   // @codec scale crate::crypto::EncryptedData
-  bytes payload = 1;
+  bytes encoded_encrypted_data = 1;
 }
