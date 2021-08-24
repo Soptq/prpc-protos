@@ -37,6 +37,9 @@ service PhactoryAPI {
 
   // Send a query to a contract
   rpc ContractQuery (ContractQueryRequest) returns (ContractQueryResponse) {}
+
+  // Get given worker's state from a GK.
+  rpc GetWorkerState (GetWorkerStateRequest) returns (WorkerState) {}
 }
 
 // Basic information about a Phactory instance.
@@ -215,4 +218,41 @@ message ContractQueryResponse {
   // The query result.
   // @codec scale crate::crypto::EncryptedData
   bytes encoded_encrypted_data = 1;
+}
+
+// Request parameters for GetWorkerState
+message GetWorkerStateRequest {
+  // The worker's public key.
+  bytes public_key = 1;
+}
+
+// Response for GetWorkerState
+message WorkerState {
+  bool registered = 1;
+  bool unresponsive = 2;
+  BenchState bench_state = 3;
+  MiningState mining_state = 4;
+  repeated uint32 waiting_heartbeats = 5;
+  uint32 last_heartbeat_for_block = 6;
+  uint32 last_heartbeat_at_block = 7;
+  ResponsiveEvent last_gk_responsive_event = 8;
+  uint32 last_gk_responsive_event_at_block = 9;
+}
+
+message BenchState {
+  uint32 start_block = 1;
+  uint64 start_time = 2;
+  uint32 duration = 4;
+}
+
+message MiningState {
+  uint32 session_id = 1;
+  bool paused = 2;
+  uint64 start_time = 3;
+}
+
+enum ResponsiveEvent {
+  NoEvent = 0;
+  EnterUnresponsive = 1;
+  ExitUnresponsive = 2;
 }
