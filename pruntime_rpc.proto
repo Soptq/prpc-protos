@@ -237,6 +237,7 @@ message WorkerState {
   uint32 last_heartbeat_at_block = 7;
   ResponsiveEvent last_gk_responsive_event = 8;
   uint32 last_gk_responsive_event_at_block = 9;
+  TokenomicInfo tokenomic_info = 10;
 }
 
 message BenchState {
@@ -255,4 +256,26 @@ enum ResponsiveEvent {
   NoEvent = 0;
   EnterUnresponsive = 1;
   ExitUnresponsive = 2;
+}
+
+message TokenomicInfo {
+  string v = 1;
+  string v_init = 2;
+  string v_last = 3;
+  uint64 v_update_at = 4;
+  uint32 v_update_block = 5;
+  uint64 iteration_last = 6;
+  uint64 challenge_time_last = 7;
+  string p_bench = 8;
+  string p_instant = 9;
+  uint32 confidence_level = 10;
+
+  string last_payout = 11;
+  uint32 last_payout_at_block = 12;
+  string total_payout = 13;
+  uint32 total_payout_count = 14;
+  string last_slash = 15;
+  uint32 last_slash_at_block = 16;
+  string total_slash = 17;
+  uint32 total_slash_count = 18;
 }
