@@ -259,6 +259,8 @@ enum ResponsiveEvent {
 }
 
 message TokenomicInfo {
+  reserved 3;
+
   string v = 1;
   string v_init = 2;
   string payable = 19;
@@ -279,6 +281,5 @@ message TokenomicInfo {
   string total_slash = 17;
   uint32 total_slash_count = 18;
 
-  // reserved: [3]
   // next: 20
 }
