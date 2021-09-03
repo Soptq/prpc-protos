@@ -261,7 +261,7 @@ enum ResponsiveEvent {
 message TokenomicInfo {
   string v = 1;
   string v_init = 2;
-  string v_last = 3;
+  string payable = 19;
   uint64 v_update_at = 4;
   uint32 v_update_block = 5;
   uint64 iteration_last = 6;
@@ -278,4 +278,7 @@ message TokenomicInfo {
   uint32 last_slash_at_block = 16;
   string total_slash = 17;
   uint32 total_slash_count = 18;
+
+  // reserved: [3]
+  // next: 20
 }
