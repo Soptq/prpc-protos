@@ -40,6 +40,12 @@ service PhactoryAPI {
 
   // Get given worker's state from a GK.
   rpc GetWorkerState (GetWorkerStateRequest) returns (WorkerState) {}
+
+  // Send geolocation data to pruntime to initialize a secret message channel toward geolocation contract.
+  rpc SendCoordinateInfo (SendCoordinateInfoRequest) returns (google.protobuf.Empty) {}
+
+  // A echo rpc to measure network RTT.
+  rpc Echo (EchoMessage) returns (EchoMessage) {}
 }
 
 // Basic information about a Phactory instance.
@@ -250,6 +256,16 @@ message MiningState {
   uint32 session_id = 1;
   bool paused = 2;
   uint64 start_time = 3;
+}
+
+message SendCoordinateInfoRequest {
+  sint32 latitude = 1;
+  sint32 longitude = 2;
+  string city_name = 3;
+}
+
+message EchoMessage {
+  bytes echo_msg = 1;
 }
 
 enum ResponsiveEvent {
