@@ -206,12 +206,21 @@ message ContractQueryRequest {
 }
 
 message Signature {
-  // The sender's public key
-  bytes origin = 1;
+  // The certificate of the signer
+  Certificate signed_by = 1;
   // The signature type
   SignatureType signature_type = 2;
   // The signature of the data
   bytes signature = 3;
+}
+
+message Certificate {
+  // The body of the certificate
+  // @codec scale crate::crypto::CertificateBody
+  bytes body = 1;
+  // An optinal signature of the body signed by a parent certificate.
+  // @boxed
+  Signature signature = 2;
 }
 
 enum SignatureType {
