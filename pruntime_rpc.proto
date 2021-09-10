@@ -217,7 +217,7 @@ message Signature {
 message Certificate {
   // The body of the certificate
   // @codec scale crate::crypto::CertificateBody
-  bytes body = 1;
+  bytes encoded_body = 1;
   // An optinal signature of the body signed by a parent certificate.
   // @boxed
   Signature signature = 2;
