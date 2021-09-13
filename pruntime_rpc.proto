@@ -76,6 +76,10 @@ message PhactoryInfo {
   uint64 score = 13;
   // Status of gatekeeper
   GatekeeperStatus gatekeeper = 14;
+  // The App version
+  string version = 15;
+  // The git commit hash which this binary was built from
+  string git_revision = 16;
 }
 
 enum GatekeeperRole {
