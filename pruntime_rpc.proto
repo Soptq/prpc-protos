@@ -80,6 +80,8 @@ message PhactoryInfo {
   string version = 15;
   // The git commit hash which this binary was built from
   string git_revision = 16;
+  // The number of running side tasks
+  uint64 running_side_tasks = 17;
 }
 
 enum GatekeeperRole {
