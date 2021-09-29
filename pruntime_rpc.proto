@@ -237,10 +237,21 @@ message Certificate {
   Signature signature = 2;
 }
 
+// Supported signature types.
+//
+// Each signature type also has its corresponding "WrapBytes" version as defined in Polkadot.js:
+//   https://github.com/polkadot-js/extension/blob/e4ce268b1cad5e39e75a2195e3aa6d0344de7745/packages/extension-dapp/src/wrapBytes.ts
+// In wrapped version, the message will have tags wrapped around the actual message
+// (`<Bytes>{msg}</Bytes>`). This was introduced in Polkadot.js to reduce the risk it's abused to
+// sign regular transaction. However, we have to support it as well because it's the only message
+// format the Polkadot.js Extension can sign.
 enum SignatureType {
   Ed25519 = 0;
   Sr25519 = 1;
   Ecdsa = 2;
+  Ed25519WrapBytes = 3;
+  Sr25519WrapBytes = 4;
+  EcdsaWrapBytes = 5;
 }
 
 message ContractQueryResponse {
