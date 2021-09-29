@@ -82,6 +82,8 @@ message PhactoryInfo {
   string git_revision = 16;
   // The number of running side tasks
   uint64 running_side_tasks = 17;
+  // The heap memory usage of the enclave.
+  MemoryUsage memory_usage = 18;
 }
 
 enum GatekeeperRole {
@@ -95,6 +97,15 @@ message GatekeeperStatus {
   GatekeeperRole role = 1;
   // The master public key, empty if not a Gatekeeper
   string master_public_key = 2;
+}
+
+message MemoryUsage {
+  // The current heap usage of Rust codes.
+  uint64 rust_used = 1;
+  // The peak heap usage of Rust codes.
+  uint64 rust_peak_used = 2;
+  // The entire peak heap memory usage of the enclave.
+  uint64 total_peak_used = 3;
 }
 
 // Response to SyncHeader & SyncParaHeader.
