@@ -40,9 +40,8 @@ service PhactoryAPI {
 
   // Get given worker's state from a GK.
   rpc GetWorkerState (GetWorkerStateRequest) returns (WorkerState) {}
-  
-  // Get derived identity keypair for downstream usage (e.g. PRouter)
-  rpc DeriveIdentSk (DeriveIdentSkRequest) returns (DeriveIdentSkResponse) {}
+
+  rpc DerivePhalaI2pKey (google.protobuf.Empty) returns (DerivePhalaI2pKeyResponse) {}
 
   // A echo rpc to measure network RTT.
   rpc Echo (EchoMessage) returns (EchoMessage) {}
@@ -295,14 +294,6 @@ message MiningState {
   uint64 start_time = 3;
 }
 
-message DeriveIdentSkRequest {
-  bytes info = 1;
-}
-
-message DeriveIdentSkResponse {
-  bytes sk = 1;
-}
-
 message EchoMessage {
   bytes echo_msg = 1;
 }
@@ -311,6 +302,10 @@ enum ResponsiveEvent {
   NoEvent = 0;
   EnterUnresponsive = 1;
   ExitUnresponsive = 2;
+}
+
+message DerivePhalaI2pKeyResponse {
+  bytes phala_i2p_key = 1;
 }
 
 message TokenomicInfo {
