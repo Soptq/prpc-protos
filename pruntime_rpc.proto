@@ -307,7 +307,7 @@ message TokenomicInfo {
 
   string v = 1;
   string v_init = 2;
-  string payable = 19;
+  string v_deductible = 19;
   string share = 20;
   uint64 v_update_at = 4;
   uint32 v_update_block = 5;
