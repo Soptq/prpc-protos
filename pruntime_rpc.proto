@@ -30,7 +30,7 @@ service PhactoryAPI {
   rpc InitRuntime (InitRuntimeRequest) returns (InitRuntimeResponse) {}
 
   // Get the cached Phactory runtime init response
-  rpc GetRuntimeInfo (google.protobuf.Empty) returns (InitRuntimeResponse) {}
+  rpc GetRuntimeInfo (GetRuntimeInfoRequest) returns (InitRuntimeResponse) {}
 
   // Get pending egress messages
   rpc GetEgressMessages (google.protobuf.Empty) returns (GetEgressMessagesResponse) {}
@@ -177,6 +177,15 @@ message InitRuntimeRequest {
   bool is_parachain = 6;
 }
 
+// Request parameters for GetRuntimeInfo.
+message GetRuntimeInfoRequest {
+  // Force to refresh the RA report.
+  bool force_refresh_ra = 1;
+  // Reset the operator of of this worker.
+  // @codec scale chain::AccountId
+  optional bytes encoded_operator = 2;
+}
+
 message InitRuntimeResponse {
   // @codec scale phala_types::WorkerRegistrationInfo<chain::AccountId>
   bytes encoded_runtime_info = 1;
@@ -313,7 +322,7 @@ message TokenomicInfo {
 
   string v = 1;
   string v_init = 2;
-  string payable = 19;
+  string v_deductible = 19;
   string share = 20;
   uint64 v_update_at = 4;
   uint32 v_update_block = 5;
