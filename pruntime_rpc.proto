@@ -55,6 +55,12 @@ service PhactoryAPI {
 
   // A echo rpc to measure network RTT.
   rpc Echo (EchoMessage) returns (EchoMessage) {}
+
+  // Get challenge for worker key handover from another pRuntime
+  rpc GetWorkerKeyChallenge (google.protobuf.Empty) returns (WorkerKeyChallenge) {}
+
+  // Get worker key with RA report on challenge from another pRuntime
+  rpc GetWorkerKey (GetWorkerKeyRequest) returns (GetWorkerKeyResponse) {}
 }
 
 // Basic information about a Phactory instance.
@@ -309,6 +315,31 @@ message WorkerState {
   repeated uint32 waiting_heartbeats = 5;
   TokenomicInfo tokenomic_info = 10;
   WorkerStat stat = 11;
+}
+
+message WorkerKeyChallenge {
+  // The challenge is only considered valid within 300 blocks (~1h)
+  uint32 block_number = 1;
+  // Worker's signature on block number in the form of big-endian bytes
+  bytes signature = 2;
+}
+
+message GetWorkerKeyRequest {
+  WorkerKeyChallenge challenge = 1;
+  // @codec scale phala_types::WorkerRegistrationInfo<chain::AccountId>
+  bytes encoded_runtime_info = 2;
+  // The requester's public key.
+  // @codec scale phala_types::WorkerPublicKey
+  bytes encoded_public_key = 3;
+  // @codec scale phala_types::EcdhPublicKey
+  bytes encoded_ecdh_public_key = 4;
+  // The sgx attestation on all the fields above
+  Attestation attestation = 5;
+}
+
+message GetWorkerKeyResponse {
+  // The worker's secret key encrypted with requester's ecdh_public_key.
+  optional bytes encrypted_secret_key = 1;
 }
 
 message BenchState {
