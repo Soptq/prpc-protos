@@ -81,6 +81,10 @@ message PhactoryInfo {
   uint64 running_side_tasks = 17;
   // The heap memory usage of the enclave.
   MemoryUsage memory_usage = 18;
+  // The number of clusters created
+  uint64 number_of_clusters = 19;
+  // The number of contracts deployed
+  uint64 number_of_contracts = 20;
 }
 
 enum GatekeeperRole {
