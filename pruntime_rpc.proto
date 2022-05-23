@@ -324,7 +324,7 @@ message WorkerKeyChallenge {
   bytes signature = 2;
 }
 
-message GetWorkerKeyRequest {
+message WorkerKeyChallengeResponse {
   WorkerKeyChallenge challenge = 1;
   // @codec scale phala_types::WorkerRegistrationInfo<chain::AccountId>
   bytes encoded_runtime_info = 2;
@@ -333,8 +333,12 @@ message GetWorkerKeyRequest {
   bytes encoded_public_key = 3;
   // @codec scale phala_types::EcdhPublicKey
   bytes encoded_ecdh_public_key = 4;
-  // The sgx attestation on all the fields above
-  Attestation attestation = 5;
+}
+
+message GetWorkerKeyRequest {
+  WorkerKeyChallengeResponse response = 1;
+  // The sgx attestation on the challenge response hash
+  Attestation attestation = 2;
 }
 
 message GetWorkerKeyResponse {
