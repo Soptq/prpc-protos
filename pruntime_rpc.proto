@@ -318,16 +318,14 @@ message WorkerState {
 }
 
 message WorkerKeyChallenge {
-  // The challenge is only considered valid within 300 blocks (~1h)
-  uint32 block_number = 1;
-  // Worker's signature on block number in the form of big-endian bytes
-  bytes signature = 2;
+  // @codec scale phala_types::WorkerKeyChallenge<chain::BlockNumber>
+  bytes encoded_challenge = 1;
 }
 
 message WorkerKeyChallengeResponse {
-  WorkerKeyChallenge challenge = 1;
-  // @codec scale phala_types::WorkerRegistrationInfo<chain::AccountId>
-  bytes encoded_runtime_info = 2;
+  // @codec scale phala_types::WorkerKeyChallenge<chain::BlockNumber>
+  bytes encoded_challenge = 1;
+  bytes runtime_info_hash = 2;
   // The requester's public key.
   // @codec scale phala_types::WorkerPublicKey
   bytes encoded_public_key = 3;
@@ -343,7 +341,8 @@ message GetWorkerKeyRequest {
 
 message GetWorkerKeyResponse {
   // The worker's secret key encrypted with requester's ecdh_public_key.
-  optional bytes encrypted_secret_key = 1;
+  // @codec scale phala_types::messaging::EncryptedKey
+  optional bytes encoded_encrypted_key = 1;
 }
 
 message BenchState {
