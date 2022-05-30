@@ -56,11 +56,14 @@ service PhactoryAPI {
   // A echo rpc to measure network RTT.
   rpc Echo (EchoMessage) returns (EchoMessage) {}
 
-  // Get challenge for worker key handover from another pRuntime
+  // Key Handover Server: Get challenge for worker key handover from another pRuntime
   rpc GetWorkerKeyChallenge (google.protobuf.Empty) returns (WorkerKeyChallenge) {}
 
-  // Get worker key with RA report on challenge from another pRuntime
-  rpc GetWorkerKey (GetWorkerKeyRequest) returns (GetWorkerKeyResponse) {}
+  // Key Handover Server: Get worker key with RA report on challenge from another pRuntime
+  rpc GetWorkerKey (WorkerKeyChallengeResponse) returns (GetWorkerKeyResponse) {}
+
+  // Key Handover Client: Process WorkerKeyChallenge and return RA report
+  rpc HandleWorkerKeyChallenge (WorkerKeyChallenge) returns (WorkerKeyChallengeResponse) {}
 }
 
 // Basic information about a Phactory instance.
@@ -322,7 +325,7 @@ message WorkerKeyChallenge {
   bytes encoded_challenge = 1;
 }
 
-message WorkerKeyChallengeResponse {
+message ChallengeClient {
   // @codec scale phala_types::WorkerKeyChallenge<chain::BlockNumber>
   bytes encoded_challenge = 1;
   bytes runtime_info_hash = 2;
@@ -333,8 +336,8 @@ message WorkerKeyChallengeResponse {
   bytes encoded_ecdh_public_key = 4;
 }
 
-message GetWorkerKeyRequest {
-  WorkerKeyChallengeResponse response = 1;
+message WorkerKeyChallengeResponse {
+  ChallengeClient payload = 1;
   // The sgx attestation on the challenge response hash
   Attestation attestation = 2;
 }
