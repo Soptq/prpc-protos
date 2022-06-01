@@ -2,6 +2,7 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
 
 package pruntime_rpc;
 
@@ -64,6 +65,9 @@ service PhactoryAPI {
 
   // Key Handover Client: Process WorkerKeyChallenge and return RA report
   rpc HandleWorkerKeyChallenge (WorkerKeyChallenge) returns (WorkerKeyChallengeResponse) {}
+
+  // Key Handover Client: Receive encrypted worker key
+  rpc ReceiveWorkerKey (GetWorkerKeyResponse) returns (google.protobuf.BoolValue) {}
 }
 
 // Basic information about a Phactory instance.
