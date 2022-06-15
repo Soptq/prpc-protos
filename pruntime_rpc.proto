@@ -85,6 +85,8 @@ message PhactoryInfo {
   uint64 number_of_clusters = 19;
   // The number of contracts deployed
   uint64 number_of_contracts = 20;
+  // Some relay chain header synced, waiting for parachain headers.
+  bool waiting_for_paraheaders = 21;
 }
 
 enum GatekeeperRole {
