@@ -332,12 +332,9 @@ message WorkerKeyChallenge {
 message ChallengeClient {
   // @codec scale phala_types::WorkerKeyChallenge<chain::BlockNumber>
   bytes encoded_challenge = 1;
-  bytes runtime_info_hash = 2;
-  // The requester's public key.
-  // @codec scale phala_types::WorkerPublicKey
-  bytes encoded_public_key = 3;
+  // The requester's ecdh public key.
   // @codec scale phala_types::EcdhPublicKey
-  bytes encoded_ecdh_public_key = 4;
+  bytes encoded_ecdh_public_key = 2;
 }
 
 message WorkerKeyChallengeResponse {
@@ -347,9 +344,12 @@ message WorkerKeyChallengeResponse {
 }
 
 message GetWorkerKeyResponse {
+  // The hash of the first synced relaychain header.
+  // @codec scale chain::Hash
+  bytes encoded_genesis_block_hash = 1;
   // The worker's secret key encrypted with requester's ecdh_public_key.
   // @codec scale phala_types::messaging::EncryptedKey
-  optional bytes encoded_encrypted_key = 1;
+  optional bytes encoded_encrypted_key = 2;
 }
 
 message BenchState {
