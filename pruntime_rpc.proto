@@ -343,13 +343,20 @@ message WorkerKeyChallengeResponse {
   Attestation attestation = 2;
 }
 
-message GetWorkerKeyResponse {
+message EncryptedWorkerKey {
   // The hash of the first synced relaychain header.
   // @codec scale chain::Hash
   bytes encoded_genesis_block_hash = 1;
+  bool dev_mode = 2;
   // The worker's secret key encrypted with requester's ecdh_public_key.
   // @codec scale phala_types::messaging::EncryptedKey
-  optional bytes encoded_encrypted_key = 2;
+  optional bytes encoded_encrypted_key = 3;
+}
+
+message GetWorkerKeyResponse {
+  EncryptedWorkerKey payload = 1;
+  // The sgx attestation on the encrypted worker key hash
+  Attestation attestation = 2;
 }
 
 message BenchState {
