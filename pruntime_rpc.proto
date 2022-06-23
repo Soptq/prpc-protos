@@ -41,6 +41,15 @@ service PhactoryAPI {
   // Get given worker's state from a GK.
   rpc GetWorkerState (GetWorkerStateRequest) returns (WorkerState) {}
 
+  // Init the endpoint
+  rpc InitEndpoint (InitEndpointRequest) returns (InitEndpointResponse) {}
+
+  // Get endpoint info
+  rpc GetEndpointInfo (google.protobuf.Empty) returns (InitEndpointResponse) {}
+
+  // Get prouter private key
+  rpc DerivePhalaI2pKey (google.protobuf.Empty) returns (DerivePhalaI2pKeyResponse) {}
+
   // A echo rpc to measure network RTT.
   rpc Echo (EchoMessage) returns (EchoMessage) {}
 }
@@ -319,6 +328,22 @@ enum ResponsiveEvent {
   NoEvent = 0;
   EnterUnresponsive = 1;
   ExitUnresponsive = 2;
+}
+
+message InitEndpointRequest {
+  // @codec scale phala_types::EndpointType
+  bytes encoded_endpoint_type = 1;
+  bytes endpoint = 2;
+}
+
+message InitEndpointResponse {
+  // @codec scale phala_types::VersionedWorkerEndpoint
+  bytes encoded_versioned_endpoint = 1;
+  optional bytes signature = 2;
+}
+
+message DerivePhalaI2pKeyResponse {
+  bytes phala_i2p_key = 1;
 }
 
 message TokenomicStat {
