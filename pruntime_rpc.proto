@@ -340,8 +340,8 @@ message AddEndpointRequest {
 }
 
 message GetEndpointResponse {
-  // @codec scale phala_types::SignedWorkerEndpoint
-  bytes encoded_signed_endpoint = 1;
+  // @codec scale phala_types::WorkerEndpointPayload
+  bytes encoded_endpoint_payload = 1;
   optional bytes signature = 2;
 }
 
