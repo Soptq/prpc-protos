@@ -42,10 +42,10 @@ service PhactoryAPI {
   rpc GetWorkerState (GetWorkerStateRequest) returns (WorkerState) {}
 
   // Init the endpoint
-  rpc InitEndpoint (InitEndpointRequest) returns (InitEndpointResponse) {}
+  rpc AddEndpoint (AddEndpointRequest) returns (EndpointResponse) {}
 
   // Get endpoint info
-  rpc GetEndpointInfo (google.protobuf.Empty) returns (InitEndpointResponse) {}
+  rpc GetEndpointInfo (google.protobuf.Empty) returns (EndpointResponse) {}
 
   // Get prouter private key
   rpc DerivePhalaI2pKey (google.protobuf.Empty) returns (DerivePhalaI2pKeyResponse) {}
@@ -330,16 +330,17 @@ enum ResponsiveEvent {
   ExitUnresponsive = 2;
 }
 
-message InitEndpointRequest {
+message AddEndpointRequest {
   // @codec scale phala_types::EndpointType
   bytes encoded_endpoint_type = 1;
   bytes endpoint = 2;
 }
 
-message InitEndpointResponse {
-  // @codec scale phala_types::VersionedWorkerEndpoint
-  bytes encoded_versioned_endpoint = 1;
+message EndpointResponse {
+  // @codec scale phala_types::VersionedWorkerEndpoints
+  bytes encoded_versioned_endpoints = 1;
   optional bytes signature = 2;
+  optional uint64 signing_time = 3;
 }
 
 message DerivePhalaI2pKeyResponse {
