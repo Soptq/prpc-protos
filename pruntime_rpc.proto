@@ -2,7 +2,6 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
-import "google/protobuf/wrappers.proto";
 
 package pruntime_rpc;
 
@@ -58,16 +57,16 @@ service PhactoryAPI {
   rpc Echo (EchoMessage) returns (EchoMessage) {}
 
   // Key Handover Server: Get challenge for worker key handover from another pRuntime
-  rpc GetWorkerKeyChallenge (google.protobuf.Empty) returns (WorkerKeyChallenge) {}
+  rpc HandoverCreateChallenge (google.protobuf.Empty) returns (HandoverChallenge) {}
 
   // Key Handover Server: Get worker key with RA report on challenge from another pRuntime
-  rpc GetWorkerKey (WorkerKeyChallengeResponse) returns (GetWorkerKeyResponse) {}
+  rpc HandoverStart (HandoverChallengeResponse) returns (HandoverWorkerKey) {}
 
-  // Key Handover Client: Process WorkerKeyChallenge and return RA report
-  rpc HandleWorkerKeyChallenge (WorkerKeyChallenge) returns (WorkerKeyChallengeResponse) {}
+  // Key Handover Client: Process HandoverChallenge and return RA report
+  rpc HandoverAcceptChallenge (HandoverChallenge) returns (HandoverChallengeResponse) {}
 
   // Key Handover Client: Receive encrypted worker key
-  rpc ReceiveWorkerKey (GetWorkerKeyResponse) returns (google.protobuf.BoolValue) {}
+  rpc HandoverReceive (HandoverWorkerKey) returns (google.protobuf.Empty) {}
 }
 
 // Basic information about a Phactory instance.
@@ -324,37 +323,21 @@ message WorkerState {
   WorkerStat stat = 11;
 }
 
-message WorkerKeyChallenge {
-  // @codec scale phala_types::WorkerKeyChallenge<chain::BlockNumber>
+message HandoverChallenge {
+  // @codec scale phala_types::HandoverChallenge<chain::BlockNumber>
   bytes encoded_challenge = 1;
 }
 
-message ChallengeClient {
-  // @codec scale phala_types::WorkerKeyChallenge<chain::BlockNumber>
-  bytes encoded_challenge = 1;
-  // The requester's ecdh public key.
-  // @codec scale phala_types::EcdhPublicKey
-  bytes encoded_ecdh_public_key = 2;
-}
-
-message WorkerKeyChallengeResponse {
-  ChallengeClient payload = 1;
-  // The sgx attestation on the challenge response hash
+message HandoverChallengeResponse {
+  // @codec scale phala_types::ChallengeHandlerInfo<chain::BlockNumber>
+  bytes encoded_challenge_handler = 1;
+  // The sgx attestation on the challenge handler hash
   Attestation attestation = 2;
 }
 
-message EncryptedWorkerKey {
-  // The hash of the first synced relaychain header.
-  // @codec scale chain::Hash
-  bytes encoded_genesis_block_hash = 1;
-  bool dev_mode = 2;
-  // The worker's secret key encrypted with requester's ecdh_public_key.
-  // @codec scale phala_types::messaging::EncryptedKey
-  optional bytes encoded_encrypted_key = 3;
-}
-
-message GetWorkerKeyResponse {
-  EncryptedWorkerKey payload = 1;
+message HandoverWorkerKey {
+  // @codec scale phala_types::EncryptedWorkerKey
+  bytes encoded_worker_key = 1;
   // The sgx attestation on the encrypted worker key hash
   Attestation attestation = 2;
 }
