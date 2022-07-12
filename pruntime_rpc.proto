@@ -55,6 +55,18 @@ service PhactoryAPI {
 
   // A echo rpc to measure network RTT.
   rpc Echo (EchoMessage) returns (EchoMessage) {}
+
+  // Key Handover Server: Get challenge for worker key handover from another pRuntime
+  rpc HandoverCreateChallenge (google.protobuf.Empty) returns (HandoverChallenge) {}
+
+  // Key Handover Server: Get worker key with RA report on challenge from another pRuntime
+  rpc HandoverStart (HandoverChallengeResponse) returns (HandoverWorkerKey) {}
+
+  // Key Handover Client: Process HandoverChallenge and return RA report
+  rpc HandoverAcceptChallenge (HandoverChallenge) returns (HandoverChallengeResponse) {}
+
+  // Key Handover Client: Receive encrypted worker key
+  rpc HandoverReceive (HandoverWorkerKey) returns (google.protobuf.Empty) {}
 }
 
 // Basic information about a Phactory instance.
@@ -309,6 +321,25 @@ message WorkerState {
   repeated uint32 waiting_heartbeats = 5;
   TokenomicInfo tokenomic_info = 10;
   WorkerStat stat = 11;
+}
+
+message HandoverChallenge {
+  // @codec scale phala_types::HandoverChallenge<chain::BlockNumber>
+  bytes encoded_challenge = 1;
+}
+
+message HandoverChallengeResponse {
+  // @codec scale phala_types::ChallengeHandlerInfo<chain::BlockNumber>
+  bytes encoded_challenge_handler = 1;
+  // The sgx attestation on the challenge handler hash
+  Attestation attestation = 2;
+}
+
+message HandoverWorkerKey {
+  // @codec scale phala_types::EncryptedWorkerKey
+  bytes encoded_worker_key = 1;
+  // The sgx attestation on the encrypted worker key hash
+  Attestation attestation = 2;
 }
 
 message BenchState {
